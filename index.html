@@ -1,0 +1,67 @@
+<!DOCTYPE HTML>
+<html lang="en-us">
+<head>
+    <meta charset="UTF-8">
+    <title>Rock, Paper, Scissors, Lizard, Spock</title>
+    <!-- Reset CSS -->
+    <link rel="stylesheet" type="text/css" href="assets/css/reset.css">
+    <!-- Bootstrap stylesheet -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <!-- My CSS -->
+    <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+</head>
+<body>
+    <div class="container-fluid">
+
+        <div class="row">
+            <div class="col-xs-12">
+                <button class="btn btn-default choice" data-name="r">Rock</button>
+                <button class="btn btn-default choice" data-name="p">Paper</button>
+                <button class="btn btn-default choice" data-name="s">Scissors</button>
+                <button class="btn btn-default choice" data-name="l">Lizard</button>
+                <button class="btn btn-default choice" data-name="k">Spock</button>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-12">
+                <form id="form">
+                    <label for="user-input">Add your name</label>
+                    <br>
+                    <input type="text" id="player1-input" placeholder="Anyone but Gambit">
+                    <input id="add1player" type="submit" value="Submit" class="btn btn-primary m-1">
+                </form>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-12">
+                <form id="form">
+                    <label for="user-input">Add your other name</label>
+                    <br>
+                    <input type="text" id="player2-input" placeholder="No one but Gambit">
+                    <input id="add2player" type="submit" value="Submit" class="btn btn-primary m-1">
+                </form>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-4">
+                <div id="playerPanel1"></div>
+            </div>
+            <div class="col-xs-4">
+                <div id="waitingNotice"></div>
+            </div>
+        </div>
+
+    </div>
+    <!-- jQuery -->
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+    <script src="https://www.gstatic.com/firebasejs/5.7.0/firebase.js"></script>
+
+    <!-- Script -->
+    <script type="text/javascript" src="./assets/javascript/app.js"></script>
+        
+</body>
+</html>
