@@ -15,8 +15,8 @@ var database = firebase.database();
 
 // Creates an array that lists out all of the options (Rock, Paper, or Scissors).
 var computerChoices = ["r", "p", "s", "l", "k"];
-var player1 = "";
-var player2 = "";
+var player1 = null;
+var player2 = null;
 var user1Guess = "";
 var user2Guess = "";
 var user1Wins = 0;
@@ -134,20 +134,40 @@ $(".choice").on("click", function(event) {
     runGame();
 })
 
-$("#add1player").on("click", function(event) {
-    event.preventDefault();
-    user1Name = $("#player1-input").val().trim();
-    // form.reset();
-    database.ref().child("/players/player1").push(user1Name);
-    database.ref("/players/player1").onDisconnect().remove();
-})
+// $("#add1player").on("click", function(event) {
+//     event.preventDefault();
+//     user1Name = $("#player1-input").val().trim();
+//     form.reset();
+//     database.ref().child("/players/player1").push(user1Name);
+//     database.ref("/players/player1").onDisconnect().remove();
+// })
 
-$("#add2player").on("click", function(event) {
+// $("#add2player").on("click", function(event) {
+//     event.preventDefault();
+//     user2Name = $("#player2-input").val().trim();
+//     form.reset();
+//     database.ref().child("/players/player2").push(user2Name);
+//     database.ref("/players/player2").onDisconnect().remove();
+// })
+
+$("#addplayer").on("click", function(event) {
     event.preventDefault();
-    user2Name = $("#player2-input").val().trim();
-    // form.reset();
-    database.ref().child("/players/player2").push(user2Name);
-    database.ref("/players/player2").onDisconnect().remove();
+    if (player1 === null) {
+        console.log("Adding Player 1");
+
+        user1Name = $("#player-input").val().trim();
+        // form.reset();
+        database.ref().child("/players/player1").push(user1Name);
+        database.ref("/players/player1").onDisconnect().remove();
+    }
+    else if ( (player1 !== null) && (player2 === null) ) {
+        console.log("Adding Player 2");
+
+        user2Name = $("#player-input").val().trim();
+        // form.reset();
+        database.ref().child("/players/player2").push(user2Name);
+        database.ref("/players/player2").onDisconnect().remove();
+    }
 })
 
 function runGame() {
