@@ -157,7 +157,7 @@ $("#addplayer").on("click", function(event) {
 
         user1Name = $("#player-input").val().trim();
         // form.reset();
-        database.ref().child("/players/player1").push(user1Name);
+        database.ref().child("/players/player1").set(user1Name);
         database.ref("/players/player1").onDisconnect().remove();
     }
     else if ( (player1 !== null) && (player2 === null) ) {
@@ -165,7 +165,7 @@ $("#addplayer").on("click", function(event) {
 
         user2Name = $("#player-input").val().trim();
         // form.reset();
-        database.ref().child("/players/player2").push(user2Name);
+        database.ref().child("/players/player2").set(user2Name);
         database.ref("/players/player2").onDisconnect().remove();
     }
 })
