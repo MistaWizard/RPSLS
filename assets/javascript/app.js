@@ -155,17 +155,17 @@ $("#addplayer").on("click", function(event) {
     if (player1 === null) {
         console.log("Adding Player 1");
 
-        user1Name = $("#player-input").val().trim();
+        player1 = $("#player-input").val().trim();
         // form.reset();
-        database.ref().child("/players/player1").set(player1);
+        database.ref().child("/players/player1").push(player1);
         database.ref("/players/player1").onDisconnect().remove();
     }
     else if ( (player1 !== null) && (player2 === null) ) {
         console.log("Adding Player 2");
 
-        user2Name = $("#player-input").val().trim();
+        player1 = $("#player-input").val().trim();
         // form.reset();
-        database.ref().child("/players/player2").set(player2);
+        database.ref().child("/players/player2").push(player2);
         database.ref("/players/player2").onDisconnect().remove();
     }
 })
