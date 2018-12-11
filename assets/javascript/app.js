@@ -283,13 +283,13 @@ function runGame() {
 }
 
 function user1Won() {
-    database.ref().child("/outcome/").set("player1.choice beats player2.choice");
+    database.ref().child("/outcome/").set(player1.choice + "beats" + player2.choice);
     database.ref().child("/players/player1/win").set(player1.win + 1);
     database.ref().child("/players/player2/lose").set(player2.lose + 1);
 }
 
 function user2Won() {
-    database.ref().child("/outcome/").set("player2.choice beats player1.choice");
+    database.ref().child("/outcome/").set(player2.choice + "beats" + player1.choice);
     database.ref().child("/players/player1/lose").set(player1.lose + 1);
     database.ref().child("/players/player2/win").set(player2.win + 1);
 }
