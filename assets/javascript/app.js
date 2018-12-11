@@ -35,7 +35,7 @@ database.ref("/players/").on("value", function(snapshot) {
 		console.log("Player 1 exists");
 
 		// Record player1 data
-		// player1 = snapshot.val().player1;
+		player1 = snapshot.val().player1;
 		// player1Name = player1.name;
 
 		// // Update player1 display
@@ -62,7 +62,7 @@ database.ref("/players/").on("value", function(snapshot) {
 		console.log("Player 2 exists");
 
 		// Record player2 data
-		// player2 = snapshot.val().player2;
+		player2 = snapshot.val().player2;
 		// player2Name = player2.name;
 
 		// // Update player2 display
@@ -134,38 +134,22 @@ $(".choice").on("click", function(event) {
     runGame();
 })
 
-// $("#add1player").on("click", function(event) {
-//     event.preventDefault();
-//     user1Name = $("#player1-input").val().trim();
-//     form.reset();
-//     database.ref().child("/players/player1").push(user1Name);
-//     database.ref("/players/player1").onDisconnect().remove();
-// })
-
-// $("#add2player").on("click", function(event) {
-//     event.preventDefault();
-//     user2Name = $("#player2-input").val().trim();
-//     form.reset();
-//     database.ref().child("/players/player2").push(user2Name);
-//     database.ref("/players/player2").onDisconnect().remove();
-// })
-
 $("#addplayer").on("click", function(event) {
     event.preventDefault();
     if (player1 === null) {
         console.log("Adding Player 1");
 
-        player1 = $("#player-input").val().trim();
+        user1Name = $("#player-input").val().trim();
         // form.reset();
-        database.ref().child("/players/player1").set(player1);
+        database.ref().child("/players/player1").set(user1Name);
         database.ref("/players/player1").onDisconnect().remove();
     }
     else if ( (player1 !== null) && (player2 === null) ) {
         console.log("Adding Player 2");
 
-        player2 = $("#player-input").val().trim();
+        user2Name = $("#player-input").val().trim();
         // form.reset();
-        database.ref().child("/players/player2").set(player2);
+        database.ref().child("/players/player2").set(user2Name);
         database.ref("/players/player2").onDisconnect().remove();
     }
 })
@@ -233,18 +217,18 @@ function runGame() {
 }
 
 function user1Won() {
-    database.ref().child("/players/" + user1Name + "/win").set(user1Wins++);
-    database.ref().child("/players/" + user2Name + "/lose").set(user2Losses++);
+    database.ref().child("/players/player1/win").set(user1Wins++);
+    database.ref().child("/players/player2/lose").set(user2Losses++);
 }
 
 function user2Won() {
-    database.ref().child("/players/" + user1Name + "/lose").set(user1Losses++);
-    database.ref().child("/players/" + user2Name + "/win").set(user2Wins++);
+    database.ref().child("/players/player1/lose").set(user1Losses++);
+    database.ref().child("/players/palyer2/win").set(user2Wins++);
 }
 
 function userTied() {
-    database.ref().child("/players/" + user1Name + "/tie").set(user1GetsTied++);
-    database.ref().child("/players/" + user2Name + "/tie").set(user2GetsTied++)
+    database.ref().child("/players/player1/tie").set(user1GetsTied++);
+    database.ref().child("/players/player2/tie").set(user2GetsTied++)
 }
 
 });
