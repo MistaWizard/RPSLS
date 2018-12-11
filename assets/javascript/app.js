@@ -168,7 +168,7 @@ $(".choice1").on("click", function(event) {
     if (player1 && player2 && (userName === player1.name) && (turn === 1)) {
         var choice = $(this).attr("data-name");
         user1Guess = choice;
-        database.ref().child("/players/player1/choice").set(choice);
+        database.ref().child("/players/player1/choice").set(user1Guess);
         alert("User guess: " + user1Guess);
         turn = 2;
         database.ref().child("/turn").set(2);
@@ -181,7 +181,7 @@ $(".choice2").on("click", function(event) {
     if (player1 && player2 && (userName === player2.name) && (turn === 2)) {
         var choice = $(this).attr("data-name");
         user2Guess = choice;
-        database.ref().child("/players/player2/choice").set(choice);
+        database.ref().child("/players/player2/choice").set(user2Guess);
         alert("User guess: " + user2Guess);
         runGame();
     }
