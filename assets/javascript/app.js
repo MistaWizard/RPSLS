@@ -148,7 +148,7 @@ $("#addplayer").on("click", function(event) {
             tie: 0,
             user1Guess: "",
         };
-        database.ref().child("/players/player1").set(user1Name);
+        database.ref().child("/players/player1").set(player1);
         database.ref("/players/player1").onDisconnect().remove();
     }
     else if ( (player1 !== null) && (player2 === null) ) {
@@ -163,7 +163,7 @@ $("#addplayer").on("click", function(event) {
             tie: 0,
             user2Guess: "",
         };
-        database.ref().child("/players/player2").set(user2Name);
+        database.ref().child("/players/player2").set(player2);
         database.ref("/players/player2").onDisconnect().remove();
     }
 })
