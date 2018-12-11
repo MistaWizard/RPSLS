@@ -14,17 +14,17 @@ firebase.initializeApp(config);
 var database = firebase.database();
 
 // Creates an array that lists out all of the options (Rock, Paper, or Scissors).
-var computerChoices = ["r", "p", "s", "l", "k"];
+// var computerChoices = ["r", "p", "s", "l", "k"];
 var player1 = null;
 var player2 = null;
 var user1Guess = "";
 var user2Guess = "";
-var user1Wins = 0;
-var user1Losses = 0;
-var user2Wins = 0;
-var user2Losses = 0;
-var user1GetsTied = 0;
-var user2GetsTied = 0;
+// var user1Wins = 0;
+// var user1Losses = 0;
+// var user2Wins = 0;
+// var user2Losses = 0;
+// var user1GetsTied = 0;
+// var user2GetsTied = 0;
 var user1Name = "";
 var user2Name = "";
 // var userName = "";
@@ -107,7 +107,7 @@ database.ref("/players/").on("value", function(snapshot) {
 		// $("#roundOutcome").html("Rock-Paper-Scissors");
 		// $("#waitingNotice").html("");
 	}
-});
+})
 
 // Attach a listener that detects user disconnection events
 database.ref("/players/").on("child_removed", function(snapshot) {
@@ -210,7 +210,7 @@ database.ref("/turn/").on("value", function(snapshot) {
 			$("#waitingNotice").html("Waiting on " + user2Name + " to choose...");
 		}
 	}
-});
+})
 
 function runGame() {
     user1Guess = player1.choice;
@@ -290,7 +290,7 @@ function user2Won() {
 
 function userTied() {
     database.ref().child("/players/player1/tie").set(player1.tie + 1);
-    database.ref().child("/players/player2/tie").set(player1.tie + 1)
+    database.ref().child("/players/player2/tie").set(player2.tie + 1);
 }
 
 });
