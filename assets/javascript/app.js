@@ -141,6 +141,13 @@ $("#addplayer").on("click", function(event) {
 
         user1Name = $("#player-input").val().trim();
         // form.reset();
+        player1 = {
+            name: user1Name,
+            win: 0,
+            lose: 0,
+            tie: 0,
+            user1Guess: "",
+        };
         database.ref().child("/players/player1").set(user1Name);
         database.ref("/players/player1").onDisconnect().remove();
     }
@@ -149,6 +156,13 @@ $("#addplayer").on("click", function(event) {
 
         user2Name = $("#player-input").val().trim();
         // form.reset();
+        player2 = {
+            name: user2Name,
+            win: 0,
+            lose: 0,
+            tie: 0,
+            user2Guess: "",
+        };
         database.ref().child("/players/player2").set(user2Name);
         database.ref("/players/player2").onDisconnect().remove();
     }
