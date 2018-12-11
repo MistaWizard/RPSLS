@@ -187,6 +187,10 @@ $(".choice2").on("click", function(event) {
     }
 })
 
+database.ref("/outcome/").on("value", function(snapshot) {
+    $("#roundOutcome").html(snapshot.val());
+})
+
 database.ref("/turn/").on("value", function(snapshot) {
 	// Check if it's player1's turn
 	if (snapshot.val() === 1) {
@@ -279,16 +283,19 @@ function runGame() {
 }
 
 function user1Won() {
+    database.ref().child("/outcome/").set("player1.choice beats player2.choice");
     database.ref().child("/players/player1/win").set(player1.win + 1);
     database.ref().child("/players/player2/lose").set(player2.lose + 1);
 }
 
 function user2Won() {
+    database.ref().child("/outcome/").set("player2.choice beats player1.choice");
     database.ref().child("/players/player1/lose").set(player1.lose + 1);
     database.ref().child("/players/player2/win").set(player2.win + 1);
 }
 
 function userTied() {
+    database.ref().child("/outcome/").set("Great minds think alike you copycat!");
     database.ref().child("/players/player1/tie").set(player1.tie + 1);
     database.ref().child("/players/player2/tie").set(player2.tie + 1);
 }
