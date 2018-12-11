@@ -27,7 +27,7 @@ var user1GetsTied = 0;
 var user2GetsTied = 0;
 var user1Name = "";
 var user2Name = "";
-var userName = "";
+// var userName = "";
 var turn = 1;
 
 // Attach a listener to the database /players/ node to listen for any changes
@@ -134,10 +134,10 @@ $("#addplayer").on("click", function(event) {
     if (player1 === null) {
         console.log("Adding Player 1");
 
-        userName = $("#player-input").val().trim();
+        user1Name = $("#player-input").val().trim();
         // form.reset();
         player1 = {
-            name: userName,
+            name: user1Name,
             win: 0,
             lose: 0,
             tie: 0,
@@ -149,10 +149,10 @@ $("#addplayer").on("click", function(event) {
     else if ( (player1 !== null) && (player2 === null) ) {
         console.log("Adding Player 2");
 
-        userName = $("#player-input").val().trim();
+        user2Name = $("#player-input").val().trim();
         // form.reset();
         player2 = {
-            name: userName,
+            name: user2Name,
             win: 0,
             lose: 0,
             tie: 0,
@@ -165,7 +165,7 @@ $("#addplayer").on("click", function(event) {
 
 $(".choice1").on("click", function(event) {
     event.preventDefault();
-    if (player1 && player2 && (userName === player1.name) && (turn === 1)) {
+    if (player1 && player2 && (user1Name === player1.name) && (turn === 1)) {
         var choice = $(this).attr("data-name");
         user1Guess = choice;
         database.ref().child("/players/player1/choice").set(user1Guess);
@@ -178,7 +178,7 @@ $(".choice1").on("click", function(event) {
 
 $(".choice2").on("click", function(event) {
     event.preventDefault();
-    if (player1 && player2 && (userName === player2.name) && (turn === 2)) {
+    if (player1 && player2 && (user2Name === player2.name) && (turn === 2)) {
         var choice = $(this).attr("data-name");
         user2Guess = choice;
         database.ref().child("/players/player2/choice").set(user2Guess);
@@ -197,7 +197,7 @@ database.ref("/turn/").on("value", function(snapshot) {
 		if (player1 && player2) {
 			$("#playerPanel1").addClass("playerPanelTurn");
 			$("#playerPanel2").removeClass("playerPanelTurn");
-			$("#waitingNotice").html("Waiting on " + player1Name + " to choose...");
+			$("#waitingNotice").html("Waiting on " + user1Name + " to choose...");
 		}
 	} else if (snapshot.val() === 2) {
 		console.log("TURN 2");
@@ -207,7 +207,7 @@ database.ref("/turn/").on("value", function(snapshot) {
 		if (player1 && player2) {
 			$("#playerPanel1").removeClass("playerPanelTurn");
 			$("#playerPanel2").addClass("playerPanelTurn");
-			$("#waitingNotice").html("Waiting on " + player2Name + " to choose...");
+			$("#waitingNotice").html("Waiting on " + user2Name + " to choose...");
 		}
 	}
 });
