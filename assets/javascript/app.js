@@ -279,18 +279,18 @@ function runGame() {
 }
 
 function user1Won() {
-    database.ref().child("/players/player1/win").set(user1Wins++);
-    database.ref().child("/players/player2/lose").set(user2Losses++);
+    database.ref().child("/players/player1/win").set(player1.win + 1);
+    database.ref().child("/players/player2/lose").set(player2.lose + 1);
 }
 
 function user2Won() {
-    database.ref().child("/players/player1/lose").set(user1Losses++);
-    database.ref().child("/players/player2/win").set(user2Wins++);
+    database.ref().child("/players/player1/lose").set(player1.lose + 1);
+    database.ref().child("/players/player2/win").set(player2.win + 1);
 }
 
 function userTied() {
-    database.ref().child("/players/player1/tie").set(user1GetsTied++);
-    database.ref().child("/players/player2/tie").set(user2GetsTied++)
+    database.ref().child("/players/player1/tie").set(player1.tie + 1);
+    database.ref().child("/players/player2/tie").set(player1.tie + 1)
 }
 
 });
