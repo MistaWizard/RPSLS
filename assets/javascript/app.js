@@ -161,7 +161,7 @@ $("#addplayer").on("click", function(event) {
         database.ref().child("/players/player2").set(player2);
         database.ref("/players/player2").onDisconnect().remove();
     }
-})
+});
 
 $(".choice1").on("click", function(event) {
     event.preventDefault();
