@@ -223,7 +223,7 @@ function user1Won() {
 
 function user2Won() {
     database.ref().child("/players/player1/lose").set(user1Losses++);
-    database.ref().child("/players/palyer2/win").set(user2Wins++);
+    database.ref().child("/players/player2/win").set(user2Wins++);
 }
 
 function userTied() {
