@@ -176,7 +176,7 @@ $(".choice1").on("click", function(event) {
     }
 })
 
-$(".choice2").on("click", function(event) {
+$(".choice1").on("click", function(event) {
     event.preventDefault();
     if (player1 && player2 && (user2Name === player2.name) && (turn === 2)) {
         var choice = $(this).attr("data-name");
