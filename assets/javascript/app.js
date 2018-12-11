@@ -107,7 +107,7 @@ database.ref("/players/").on("value", function(snapshot) {
 		// $("#roundOutcome").html("Rock-Paper-Scissors");
 		// $("#waitingNotice").html("");
 	}
-})
+});
 
 // Attach a listener that detects user disconnection events
 database.ref("/players/").on("child_removed", function(snapshot) {
@@ -174,7 +174,7 @@ $(".choice1").on("click", function(event) {
         database.ref().child("/turn").set(2);
         // runGame();
     }
-})
+});
 
 $(".choice2").on("click", function(event) {
     event.preventDefault();
@@ -185,11 +185,11 @@ $(".choice2").on("click", function(event) {
         alert(user2Name + " guess: " + user2Guess);
         runGame();
     }
-})
+});
 
 database.ref("/outcome/").on("value", function(snapshot) {
     $("#roundOutcome").html(snapshot.val());
-})
+});
 
 database.ref("/turn/").on("value", function(snapshot) {
 	// Check if it's player1's turn
@@ -214,7 +214,7 @@ database.ref("/turn/").on("value", function(snapshot) {
 			$("#waitingNotice").html("Waiting on " + user2Name + " to choose...");
 		}
 	}
-})
+});
 
 function runGame() {
     user1Guess = player1.choice;
@@ -280,24 +280,24 @@ function runGame() {
         turn = 1;
         database.ref().child("/turn").set(1);
 
-}
+};
 
 function user1Won() {
     database.ref().child("/outcome/").set(player1.choice + " beats " + player2.choice);
     database.ref().child("/players/player1/win").set(player1.win + 1);
     database.ref().child("/players/player2/lose").set(player2.lose + 1);
-}
+};
 
 function user2Won() {
     database.ref().child("/outcome/").set(player2.choice + " beats " + player1.choice);
     database.ref().child("/players/player1/lose").set(player1.lose + 1);
     database.ref().child("/players/player2/win").set(player2.win + 1);
-}
+};
 
 function userTied() {
     database.ref().child("/outcome/").set("Great minds think alike you copycat!");
     database.ref().child("/players/player1/tie").set(player1.tie + 1);
     database.ref().child("/players/player2/tie").set(player2.tie + 1);
-}
+};
 
 });
