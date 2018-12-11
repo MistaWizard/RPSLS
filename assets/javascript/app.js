@@ -27,6 +27,7 @@ var user1GetsTied = 0;
 var user2GetsTied = 0;
 var user1Name = "";
 var user2Name = "";
+var userName = "";
 var turn = 1;
 
 // Attach a listener to the database /players/ node to listen for any changes
@@ -128,11 +129,43 @@ database.ref("/players/").on("child_removed", function(snapshot) {
 
 // }
 
+$("#addplayer").on("click", function(event) {
+    event.preventDefault();
+    if (player1 === null) {
+        console.log("Adding Player 1");
 
+        userName = $("#player-input").val().trim();
+        // form.reset();
+        player1 = {
+            name: userName,
+            win: 0,
+            lose: 0,
+            tie: 0,
+            user1Guess: "",
+        };
+        database.ref().child("/players/player1").set(player1);
+        database.ref("/players/player1").onDisconnect().remove();
+    }
+    else if ( (player1 !== null) && (player2 === null) ) {
+        console.log("Adding Player 2");
+
+        userName = $("#player-input").val().trim();
+        // form.reset();
+        player2 = {
+            name: userName,
+            win: 0,
+            lose: 0,
+            tie: 0,
+            user2Guess: "",
+        };
+        database.ref().child("/players/player2").set(player2);
+        database.ref("/players/player2").onDisconnect().remove();
+    }
+})
 
 $(".choice1").on("click", function(event) {
     event.preventDefault();
-    if (player1 && player2 && (user1Name === player1.name) && (turn === 1)) {
+    if (player1 && player2 && (userName === player1.name) && (turn === 1)) {
         var choice = $(this).attr("data-name");
         user1Guess = choice;
         database.ref().child("/players/player1/choice").set(choice);
@@ -145,46 +178,12 @@ $(".choice1").on("click", function(event) {
 
 $(".choice2").on("click", function(event) {
     event.preventDefault();
-    if (player1 && player2 && (user2Name === player2.name) && (turn === 2)) {
+    if (player1 && player2 && (userName === player2.name) && (turn === 2)) {
         var choice = $(this).attr("data-name");
         user2Guess = choice;
         database.ref().child("/players/player2/choice").set(choice);
         alert("User guess: " + user2Guess);
         runGame();
-    }
-})
-
-$("#addplayer").on("click", function(event) {
-    event.preventDefault();
-    if (player1 === null) {
-        console.log("Adding Player 1");
-
-        user1Name = $("#player-input").val().trim();
-        // form.reset();
-        player1 = {
-            name: user1Name,
-            win: 0,
-            lose: 0,
-            tie: 0,
-            user1Guess: "",
-        };
-        database.ref().child("/players/player1").set(player1);
-        database.ref("/players/player1").onDisconnect().remove();
-    }
-    else if ( (player1 !== null) && (player2 === null) ) {
-        console.log("Adding Player 2");
-
-        user2Name = $("#player-input").val().trim();
-        // form.reset();
-        player2 = {
-            name: user2Name,
-            win: 0,
-            lose: 0,
-            tie: 0,
-            user2Guess: "",
-        };
-        database.ref().child("/players/player2").set(player2);
-        database.ref("/players/player2").onDisconnect().remove();
     }
 })
 
