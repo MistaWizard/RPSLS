@@ -141,7 +141,7 @@ $("#addplayer").on("click", function(event) {
             win: 0,
             lose: 0,
             tie: 0,
-            user1Guess: "",
+            choice: "",
         };
         database.ref().child("/players/player1").set(player1);
         database.ref("/players/player1").onDisconnect().remove();
@@ -156,7 +156,7 @@ $("#addplayer").on("click", function(event) {
             win: 0,
             lose: 0,
             tie: 0,
-            user2Guess: "",
+            choice: "",
         };
         database.ref().child("/players/player2").set(player2);
         database.ref("/players/player2").onDisconnect().remove();
