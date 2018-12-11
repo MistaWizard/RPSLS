@@ -163,7 +163,7 @@ $("#addplayer").on("click", function(event) {
     else if ( (player1 !== null) && (player2 === null) ) {
         console.log("Adding Player 2");
 
-        player1 = $("#player-input").val().trim();
+        player2 = $("#player-input").val().trim();
         // form.reset();
         database.ref().child("/players/player2").push(player2);
         database.ref("/players/player2").onDisconnect().remove();
