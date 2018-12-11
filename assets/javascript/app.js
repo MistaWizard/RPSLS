@@ -187,8 +187,34 @@ $(".choice2").on("click", function(event) {
     }
 })
 
-function runGame() {
+database.ref("/turn/").on("value", function(snapshot) {
+	// Check if it's player1's turn
+	if (snapshot.val() === 1) {
+		console.log("TURN 1");
+		turn = 1;
 
+		// Update the display if both players are in the game
+		if (player1 && player2) {
+			$("#playerPanel1").addClass("playerPanelTurn");
+			$("#playerPanel2").removeClass("playerPanelTurn");
+			$("#waitingNotice").html("Waiting on " + player1Name + " to choose...");
+		}
+	} else if (snapshot.val() === 2) {
+		console.log("TURN 2");
+		turn = 2;
+
+		// Update the display if both players are in the game
+		if (player1 && player2) {
+			$("#playerPanel1").removeClass("playerPanelTurn");
+			$("#playerPanel2").addClass("playerPanelTurn");
+			$("#waitingNotice").html("Waiting on " + player2Name + " to choose...");
+		}
+	}
+});
+
+function runGame() {
+    user1Guess = player1.choice;
+    user2Guess = player2.choice;
     // runGuesses();
     if (user1Guess == user2Guess)  //condition 1
         userTied();
