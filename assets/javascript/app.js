@@ -14,7 +14,7 @@ firebase.initializeApp(config);
 var database = firebase.database();
 
 // Creates an array that lists out all of the options (Rock, Paper, or Scissors).
-// var computerChoices = ["r", "p", "s", "l", "k"];
+var computerChoices = ["r", "p", "s", "l", "k"];
 var player1 = null;
 var player2 = null;
 var user1Guess = "";
@@ -135,7 +135,7 @@ $("#addplayer").on("click", function(event) {
         console.log("Adding Player 1");
 
         user1Name = $("#player-input").val().trim();
-        // form.reset();
+        form.reset();
         player1 = {
             name: user1Name,
             win: 0,
@@ -150,7 +150,7 @@ $("#addplayer").on("click", function(event) {
         console.log("Adding Player 2");
 
         user2Name = $("#player-input").val().trim();
-        // form.reset();
+        form.reset();
         player2 = {
             name: user2Name,
             win: 0,
@@ -172,7 +172,6 @@ $(".choice1").on("click", function(event) {
         alert(user1Name + " guess: " + user1Guess);
         turn = 2;
         database.ref().child("/turn").set(2);
-        // runGame();
     }
 });
 
@@ -201,7 +200,20 @@ database.ref("/turn/").on("value", function(snapshot) {
 		if (player1 && player2) {
 			$("#playerPanel1").addClass("playerPanelTurn");
 			$("#playerPanel2").removeClass("playerPanelTurn");
-			$("#waitingNotice").html("Waiting on " + user1Name + " to choose...");
+            $("#waitingNotice").html("Waiting on " + user1Name + " to choose...");
+                // Start by emptying our button-view div
+            $("#button-view").empty();
+
+                // Iterate through our array, creat the buttons and append them to the button-view div
+                for (var i = 0; i < computerChoices.length; i++) {
+                    var a = $("<button>");
+                    a.addClass("btn btn-primary m-1 choice1");
+                    // a.attr("id", "choice1");
+                    a.attr("data-name", computerChoices[i]);
+                    a.text(computerChoices[i]);
+                    $("#button-view").append(a);
+                    // console.log(topics);
+                }
 		}
 	} else if (snapshot.val() === 2) {
 		console.log("TURN 2");
@@ -211,7 +223,19 @@ database.ref("/turn/").on("value", function(snapshot) {
 		if (player1 && player2) {
 			$("#playerPanel1").removeClass("playerPanelTurn");
 			$("#playerPanel2").addClass("playerPanelTurn");
-			$("#waitingNotice").html("Waiting on " + user2Name + " to choose...");
+            $("#waitingNotice").html("Waiting on " + user2Name + " to choose...");
+            $("#button-view").empty();
+
+            // Iterate through our array, creat the buttons and append them to the button-view div
+            for (var i = 0; i < computerChoices.length; i++) {
+                var a = $("<button>");
+                a.addClass("btn btn-primary m-1 choice2");
+                // a.attr("id", "choice2");
+                a.attr("data-name", computerChoices[i]);
+                a.text(computerChoices[i]);
+                $("#button-view").append(a);
+                // console.log(topics);
+            }
 		}
 	}
 });
