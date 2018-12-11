@@ -27,6 +27,7 @@ var user1GetsTied = 0;
 var user2GetsTied = 0;
 var user1Name = "";
 var user2Name = "";
+var turn = 1;
 
 // Attach a listener to the database /players/ node to listen for any changes
 database.ref("/players/").on("value", function(snapshot) {
@@ -118,20 +119,39 @@ database.ref("/players/").on("child_removed", function(snapshot) {
 	// database.ref("/chat/" + chatKey).set(msg);
 });
 
-function runGuesses() {
-// Randomly chooses a choice from the options array. This is the Computer's guess.
-user2Guess = computerChoices[Math.floor(Math.random() * computerChoices.length)];
+// function runGuesses() {
+// // Randomly chooses a choice from the options array. This is the Computer's guess.
+// user2Guess = computerChoices[Math.floor(Math.random() * computerChoices.length)];
 
-// Alerts the Computer's guess.
-alert("Computer guess: " + user2Guess);
+// // Alerts the Computer's guess.
+// alert("Computer guess: " + user2Guess);
 
-}
+// }
 
-$(".choice").on("click", function(event) {
+
+
+$(".choice1").on("click", function(event) {
     event.preventDefault();
-    user1Guess = $(this).attr("data-name");
-    alert("User guess: " + user1Guess);
-    runGame();
+    if (player1 && player2 && (user1Name === player1.name) && (turn === 1)) {
+        var choice = $(this).attr("data-name");
+        user1Guess = choice;
+        database.ref().child("/players/player1/choice").set(choice);
+        alert("User guess: " + user1Guess);
+        turn = 2;
+        database.ref().child("/turn").set(2);
+        // runGame();
+    }
+})
+
+$(".choice2").on("click", function(event) {
+    event.preventDefault();
+    if (player1 && player2 && (user2Name === player2.name) && (turn === 2)) {
+        var choice = $(this).attr("data-name");
+        user2Guess = choice;
+        database.ref().child("/players/player2/choice").set(choice);
+        alert("User guess: " + user2Guess);
+        runGame();
+    }
 })
 
 $("#addplayer").on("click", function(event) {
@@ -170,7 +190,7 @@ $("#addplayer").on("click", function(event) {
 
 function runGame() {
 
-    runGuesses();
+    // runGuesses();
     if (user1Guess == user2Guess)  //condition 1
         userTied();
         else if (user1Guess == "r") //condition 2
@@ -227,6 +247,9 @@ function runGame() {
             else
                 // alert("User2 wins");
                 user2Won();
+
+        turn = 1;
+        database.ref().child("/turn").set(1);
 
 }
 
