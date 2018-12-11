@@ -99,7 +99,7 @@ database.ref("/players/").on("value", function(snapshot) {
 	if (!player1 && !player2) {
 		// database.ref("/chat/").remove();
 		database.ref("/turn/").remove();
-		// database.ref("/outcome/").remove();
+		database.ref("/outcome/").remove();
 
 		// $("#chatDisplay").empty();
 		// $("#playerPanel1").removeClass("playerPanelTurn");
