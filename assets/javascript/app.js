@@ -169,20 +169,20 @@ $(".choice1").on("click", function(event) {
         var choice = $(this).attr("data-name");
         user1Guess = choice;
         database.ref().child("/players/player1/choice").set(user1Guess);
-        alert("User guess: " + user1Guess);
+        alert(user1Name + " guess: " + user1Guess);
         turn = 2;
         database.ref().child("/turn").set(2);
         // runGame();
     }
 })
 
-$(".choice1").on("click", function(event) {
+$(".choice2").on("click", function(event) {
     event.preventDefault();
     if (player1 && player2 && (user2Name === player2.name) && (turn === 2)) {
         var choice = $(this).attr("data-name");
         user2Guess = choice;
         database.ref().child("/players/player2/choice").set(user2Guess);
-        alert("User guess: " + user2Guess);
+        alert(user2Name + " guess: " + user2Guess);
         runGame();
     }
 })
