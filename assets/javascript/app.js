@@ -193,7 +193,6 @@ function renderButtons() {
 
 database.ref("/outcome/").on("value", function(snapshot) {
     $("#roundOutcome").html(snapshot.val());
-    setTimeout(endGame, 5000);
 });
 
 database.ref("/turn/").on("value", function(snapshot) {
@@ -222,6 +221,7 @@ database.ref("/turn/").on("value", function(snapshot) {
 	} else if (snapshot.val() === 3) {
         console.log("TURN 3 means Outcome Round");
         turn = 3;
+        setTimeout(endGame, 5000);
     }
 });
 
