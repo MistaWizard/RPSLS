@@ -133,7 +133,7 @@ $("#addplayer").on("click", function(event) {
     event.preventDefault();
     if (player1 === null) {
         console.log("Adding Player 1");
-
+        renderButtons();
         user1Name = $("#player-input").val().trim();
         form.reset();
         player1 = {
@@ -148,7 +148,7 @@ $("#addplayer").on("click", function(event) {
     }
     else if ( (player1 !== null) && (player2 === null) ) {
         console.log("Adding Player 2");
-
+        renderButtons();
         user2Name = $("#player-input").val().trim();
         form.reset();
         player2 = {
@@ -163,6 +163,7 @@ $("#addplayer").on("click", function(event) {
     }
 });
 
+// function player1Go() {
 $(".choice1").on("click", function(event) {
     event.preventDefault();
     if (player1 && player2 && (user1Name === player1.name) && (turn === 1)) {
@@ -175,6 +176,7 @@ $(".choice1").on("click", function(event) {
     }
 });
 
+// function player2Go() {
 $(".choice2").on("click", function(event) {
     event.preventDefault();
     if (player1 && player2 && (user2Name === player2.name) && (turn === 2)) {
@@ -185,6 +187,37 @@ $(".choice2").on("click", function(event) {
         runGame();
     }
 });
+
+function renderButtons() {
+    if (player1 === null) {
+        console.log("Adding Player 1 buttons");
+
+        $("#button-view").empty();
+
+        // Iterate through our array, creat the buttons and append them to the button-view div
+        for (var i = 0; i < computerChoices.length; i++) {
+            var a = $("<button>");
+            a.addClass("btn btn-primary m-1 choice1");
+            a.attr("data-name", computerChoices[i]);
+            a.text(computerChoices[i]);
+            $("#button-view").append(a);
+        };
+    }
+    else if ( (player1 !== null) && (player2 === null) ) {
+        console.log("Adding Player 2 buttons");
+
+        $("#button-view").empty();
+
+        // Iterate through our array, creat the buttons and append them to the button-view div
+        for (var i = 0; i < computerChoices.length; i++) {
+            var a = $("<button>");
+            a.addClass("btn btn-primary m-1 choice2");
+            a.attr("data-name", computerChoices[i]);
+            a.text(computerChoices[i]);
+            $("#button-view").append(a);
+        };
+    }
+};
 
 database.ref("/outcome/").on("value", function(snapshot) {
     $("#roundOutcome").html(snapshot.val());
@@ -323,5 +356,11 @@ function userTied() {
     database.ref().child("/players/player1/tie").set(player1.tie + 1);
     database.ref().child("/players/player2/tie").set(player2.tie + 1);
 };
+
+// $(document).on("click", "#choice1", player1Go);
+
+// $(document).on("click", "#choice2", player2Go);
+
+// renderButtons();
 
 });
