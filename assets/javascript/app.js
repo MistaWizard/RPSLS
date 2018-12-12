@@ -14,7 +14,7 @@ firebase.initializeApp(config);
 var database = firebase.database();
 
 // Creates an array that lists out all of the options (Rock, Paper, or Scissors).
-var computerChoices = ["r", "p", "s", "l", "k"];
+var computerChoices = ["Rock", "Paper", "Scissors", "Lizard", "Spock"];
 var player1 = null;
 var player2 = null;
 var user1Guess = "";
@@ -163,9 +163,9 @@ $("#addplayer").on("click", function(event) {
     }
 });
 
-// function player1Go() {
-$(".choice1").on("click", function(event) {
-    event.preventDefault();
+function player1Go() {
+// $("#choice1").on("click", function(event) {
+    // event.preventDefault();
     if (player1 && player2 && (user1Name === player1.name) && (turn === 1)) {
         var choice = $(this).attr("data-name");
         user1Guess = choice;
@@ -174,11 +174,11 @@ $(".choice1").on("click", function(event) {
         turn = 2;
         database.ref().child("/turn").set(2);
     }
-});
+};
 
-// function player2Go() {
-$(".choice2").on("click", function(event) {
-    event.preventDefault();
+function player2Go() {
+// $("#choice2").on("click", function(event) {
+    // event.preventDefault();
     if (player1 && player2 && (user2Name === player2.name) && (turn === 2)) {
         var choice = $(this).attr("data-name");
         user2Guess = choice;
@@ -186,7 +186,7 @@ $(".choice2").on("click", function(event) {
         alert(user2Name + " guess: " + user2Guess);
         runGame();
     }
-});
+};
 
 function renderButtons() {
     if (player1 === null) {
@@ -197,7 +197,8 @@ function renderButtons() {
         // Iterate through our array, creat the buttons and append them to the button-view div
         for (var i = 0; i < computerChoices.length; i++) {
             var a = $("<button>");
-            a.addClass("btn btn-primary m-1 choice1");
+            a.addClass("btn btn-default m-1");
+            a.attr("id", "choice1")
             a.attr("data-name", computerChoices[i]);
             a.text(computerChoices[i]);
             $("#button-view").append(a);
@@ -211,7 +212,8 @@ function renderButtons() {
         // Iterate through our array, creat the buttons and append them to the button-view div
         for (var i = 0; i < computerChoices.length; i++) {
             var a = $("<button>");
-            a.addClass("btn btn-primary m-1 choice2");
+            a.addClass("btn btn-default m-1");
+            a.attr("id", "choice2")
             a.attr("data-name", computerChoices[i]);
             a.text(computerChoices[i]);
             $("#button-view").append(a);
@@ -234,19 +236,6 @@ database.ref("/turn/").on("value", function(snapshot) {
 			$("#playerPanel1").addClass("playerPanelTurn");
 			$("#playerPanel2").removeClass("playerPanelTurn");
             $("#waitingNotice").html("Waiting on " + user1Name + " to choose...");
-                // Start by emptying our button-view div
-            $("#button-view").empty();
-
-                // Iterate through our array, creat the buttons and append them to the button-view div
-                for (var i = 0; i < computerChoices.length; i++) {
-                    var a = $("<button>");
-                    a.addClass("btn btn-primary m-1 choice1");
-                    // a.attr("id", "choice1");
-                    a.attr("data-name", computerChoices[i]);
-                    a.text(computerChoices[i]);
-                    $("#button-view").append(a);
-                    // console.log(topics);
-                }
 		}
 	} else if (snapshot.val() === 2) {
 		console.log("TURN 2");
@@ -257,18 +246,6 @@ database.ref("/turn/").on("value", function(snapshot) {
 			$("#playerPanel1").removeClass("playerPanelTurn");
 			$("#playerPanel2").addClass("playerPanelTurn");
             $("#waitingNotice").html("Waiting on " + user2Name + " to choose...");
-            $("#button-view").empty();
-
-            // Iterate through our array, creat the buttons and append them to the button-view div
-            for (var i = 0; i < computerChoices.length; i++) {
-                var a = $("<button>");
-                a.addClass("btn btn-primary m-1 choice2");
-                // a.attr("id", "choice2");
-                a.attr("data-name", computerChoices[i]);
-                a.text(computerChoices[i]);
-                $("#button-view").append(a);
-                // console.log(topics);
-            }
 		}
 	}
 });
@@ -279,55 +256,55 @@ function runGame() {
     // runGuesses();
     if (user1Guess == user2Guess)  //condition 1
         userTied();
-        else if (user1Guess == "r") //condition 2
-            if (user2Guess == "s") 
+        else if (user1Guess == "Rock") //condition 2
+            if (user2Guess == "Scissors") 
                 // alert("User wins");
                 user1Won();
-            else if (user2Guess == "l")
-                // alert("User wins");
-                user1Won();
-            else 
-                // alert("User2 wins");
-                user2Won();
-    
-        else if (user1Guess == "p") //condition 3
-            if (user2Guess == "r") 
-                // alert("User wins");
-                user1Won();
-            else if (user2Guess == "k")
+            else if (user2Guess == "Lizard")
                 // alert("User wins");
                 user1Won();
             else 
                 // alert("User2 wins");
                 user2Won();
     
-        else if (user1Guess == "s")
-            if (user2Guess == "p")
+        else if (user1Guess == "Paper") //condition 3
+            if (user2Guess == "Rock") 
                 // alert("User wins");
                 user1Won();
-            else if (user2Guess == "l")
+            else if (user2Guess == "Spock")
+                // alert("User wins");
+                user1Won();
+            else 
+                // alert("User2 wins");
+                user2Won();
+    
+        else if (user1Guess == "Scissors")
+            if (user2Guess == "Paper")
+                // alert("User wins");
+                user1Won();
+            else if (user2Guess == "Lizard")
                 // alert("User wins");
                 user1Won();
             else 
                 // alert("User2 wins");
                 user2Won();
 
-        else if (user1Guess == "l")
-            if (user2Guess == "p")
+        else if (user1Guess == "Lizard")
+            if (user2Guess == "Paper")
                 // alert("User wins");
                 user1Won();
-            else if (user2Guess == "k")
+            else if (user2Guess == "Spock")
                 // alert("User wins");
                 user1Won();
             else
                 // alert("User2 wins");
                 user2Won();
 
-        else if (user1Guess == "k")
-            if (user2Guess == "r")
+        else if (user1Guess == "Spock")
+            if (user2Guess == "Rock")
                 // alert("User wins");
                 user1Won();
-            else if (user2Guess == "s")
+            else if (user2Guess == "Scissors")
                 // alert("User wins");
                 user1Won();
             else
@@ -357,10 +334,8 @@ function userTied() {
     database.ref().child("/players/player2/tie").set(player2.tie + 1);
 };
 
-// $(document).on("click", "#choice1", player1Go);
+$(document).on("click", "#choice1", player1Go);
 
-// $(document).on("click", "#choice2", player2Go);
-
-// renderButtons();
+$(document).on("click", "#choice2", player2Go);
 
 });
