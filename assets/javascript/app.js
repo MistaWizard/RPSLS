@@ -41,7 +41,7 @@ database.ref("/players/").on("value", function(snapshot) {
 		user1Name = player1.name;
 
 		// // Update player1 display
-		// $("#playerOneName").text(player1Name);
+		$("#playerOneName").text(user1Name);
 		$("#player1Stats").html("Win: " + player1.win + ", Loss: " + player1.lose + ", Tie: " + player1.tie);
 	} else {
 		console.log("Player 1 does NOT exist");
@@ -50,12 +50,12 @@ database.ref("/players/").on("value", function(snapshot) {
 		user1Name = "";
 
 		// // Update player1 display
-		// $("#playerOneName").text("Waiting for Player 1...");
-		// $("#playerPanel1").removeClass("playerPanelTurn");
-		// $("#playerPanel2").removeClass("playerPanelTurn");
-		// database.ref("/outcome/").remove();
-		// $("#roundOutcome").html("Rock-Paper-Scissors");
-		// $("#waitingNotice").html("");
+		$("#playerOneName").text("Waiting for Player 1...");
+		$("#playerPanel1").removeClass("playerPanelTurn");
+		$("#playerPanel2").removeClass("playerPanelTurn");
+		database.ref("/outcome/").remove();
+		$("#roundOutcome").html("Rock-Paper-Scissors");
+		$("#waitingNotice").html("");
 		$("#player1Stats").html("Win: 0, Loss: 0, Tie: 0");
 	}
 
@@ -68,7 +68,7 @@ database.ref("/players/").on("value", function(snapshot) {
 		user2Name = player2.name;
 
 		// // Update player2 display
-		// $("#playerTwoName").text(player2Name);
+		$("#playerTwoName").text(user2Name);
 		$("#player2Stats").html("Win: " + player2.win + ", Loss: " + player2.lose + ", Tie: " + player2.tie);
 	} else {
 		console.log("Player 2 does NOT exist");
@@ -77,12 +77,12 @@ database.ref("/players/").on("value", function(snapshot) {
 		user2Name = "";
 
 		// // Update player2 display
-		// $("#playerTwoName").text("Waiting for Player 2...");
-		// $("#playerPanel1").removeClass("playerPanelTurn");
-		// $("#playerPanel2").removeClass("playerPanelTurn");
-		// database.ref("/outcome/").remove();
-		// $("#roundOutcome").html("Rock-Paper-Scissors");
-		// $("#waitingNotice").html("");
+		$("#playerTwoName").text("Waiting for Player 2...");
+		$("#playerPanel1").removeClass("playerPanelTurn");
+		$("#playerPanel2").removeClass("playerPanelTurn");
+		database.ref("/outcome/").remove();
+		$("#roundOutcome").html("Rock-Paper-Scissors");
+		$("#waitingNotice").html("");
 		$("#player2Stats").html("Win: 0, Loss: 0, Tie: 0");
 	}
 
@@ -101,33 +101,17 @@ database.ref("/players/").on("value", function(snapshot) {
 		database.ref("/turn/").remove();
 		database.ref("/outcome/").remove();
 
-		// $("#chatDisplay").empty();
-		// $("#playerPanel1").removeClass("playerPanelTurn");
-		// $("#playerPanel2").removeClass("playerPanelTurn");
-		// $("#roundOutcome").html("Rock-Paper-Scissors");
-		// $("#waitingNotice").html("");
+		$("#playerPanel1").removeClass("playerPanelTurn");
+		$("#playerPanel2").removeClass("playerPanelTurn");
+		$("#roundOutcome").html("Rock-Paper-Scissors");
+		$("#waitingNotice").html("");
 	}
 });
 
 // Attach a listener that detects user disconnection events
 database.ref("/players/").on("child_removed", function(snapshot) {
-	var msg = snapshot.val().name + " has disconnected!";
-
-	// // Get a key for the disconnection chat entry
-	// var chatKey = database.ref().child("/chat/").push().key;
-
-	// // Save the disconnection chat entry
-	// database.ref("/chat/" + chatKey).set(msg);
+	console.log(snapshot.val().name + " has disconnected!");
 });
-
-// function runGuesses() {
-// // Randomly chooses a choice from the options array. This is the Computer's guess.
-// user2Guess = computerChoices[Math.floor(Math.random() * computerChoices.length)];
-
-// // Alerts the Computer's guess.
-// alert("Computer guess: " + user2Guess);
-
-// }
 
 $("#addplayer").on("click", function(event) {
     event.preventDefault();
@@ -170,7 +154,7 @@ function player1Go() {
         var choice = $(this).attr("data-name");
         user1Guess = choice;
         database.ref().child("/players/player1/choice").set(user1Guess);
-        alert(user1Name + " guess: " + user1Guess);
+        // alert(user1Name + " guess: " + user1Guess);
         turn = 2;
         database.ref().child("/turn").set(2);
     }
@@ -183,7 +167,7 @@ function player2Go() {
         var choice = $(this).attr("data-name");
         user2Guess = choice;
         database.ref().child("/players/player2/choice").set(user2Guess);
-        alert(user2Name + " guess: " + user2Guess);
+        // alert(user2Name + " guess: " + user2Guess);
         runGame();
     }
 };
@@ -233,6 +217,7 @@ database.ref("/turn/").on("value", function(snapshot) {
 
 		// Update the display if both players are in the game
 		if (player1 && player2) {
+            $("#roundOutcome").empty();
 			$("#playerPanel1").addClass("playerPanelTurn");
 			$("#playerPanel2").removeClass("playerPanelTurn");
             $("#waitingNotice").html("Waiting on " + user1Name + " to choose...");
@@ -247,7 +232,11 @@ database.ref("/turn/").on("value", function(snapshot) {
 			$("#playerPanel2").addClass("playerPanelTurn");
             $("#waitingNotice").html("Waiting on " + user2Name + " to choose...");
 		}
-	}
+	} else if (snapshot.val() === 3) {
+        console.log("TURN 3 means outcome round");
+        turn = 3;
+        setTimeout(endGame, 5000);
+    }
 });
 
 function runGame() {
@@ -311,19 +300,24 @@ function runGame() {
                 // alert("User2 wins");
                 user2Won();
 
-        turn = 1;
-        database.ref().child("/turn").set(1);
+        turn = 3;
+        database.ref().child("/turn").set(3);
 
 };
 
+function endGame() {
+    turn = 1;
+    database.ref().child("/turn").set(1);
+}
+
 function user1Won() {
-    database.ref().child("/outcome/").set(player1.choice + " beats " + player2.choice);
+    database.ref().child("/outcome/").set(player1.name + " beats " + player2.name + " with " + player1.choice + " over " + player2.choice);
     database.ref().child("/players/player1/win").set(player1.win + 1);
     database.ref().child("/players/player2/lose").set(player2.lose + 1);
 };
 
 function user2Won() {
-    database.ref().child("/outcome/").set(player2.choice + " beats " + player1.choice);
+    database.ref().child("/outcome/").set(player2.name + " beats " + player1.name + " with " + player2.choice + " over " + player1.choice);
     database.ref().child("/players/player1/lose").set(player1.lose + 1);
     database.ref().child("/players/player2/win").set(player2.win + 1);
 };
