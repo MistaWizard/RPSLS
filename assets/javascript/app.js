@@ -85,12 +85,11 @@ database.ref("/players/").on("value", function(snapshot) {
 		$("#playerPanel1").addClass("playerPanelTurn");
 
 		// Update the center display
-		$("#waitingNotice").html("Waiting on " + player1Name + " to choose...");
+        $("#waitingNotice").html("Waiting on " + player1Name + " to choose...");
 	}
 
 	// If both players leave the game, empty the chat session
 	if (!player1 && !player2) {
-		// database.ref("/chat/").remove();
 		database.ref("/turn/").remove();
 		database.ref("/outcome/").remove();
 
@@ -145,7 +144,6 @@ function player1Go() {
         var choice = $(this).attr("data-name");
         player1Guess = choice;
         database.ref().child("/players/player1/choice").set(player1Guess);
-        // alert(player1Name + " guess: " + player1Guess);
         turn = 2;
         database.ref().child("/turn").set(2);
     }
@@ -156,7 +154,6 @@ function player2Go() {
         var choice = $(this).attr("data-name");
         player2Guess = choice;
         database.ref().child("/players/player2/choice").set(player2Guess);
-        // alert(player2Name + " guess: " + player2Guess);
         runGame();
     }
 };
