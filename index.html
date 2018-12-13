@@ -8,12 +8,16 @@
     <!-- Bootstrap stylesheet -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <!-- My CSS -->
-    <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/style.css">    
+    <!-- jQuery -->
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/5.7.0/firebase.js"></script>
 </head>
 <body>
-    <div class="container">
+    <div class="container-fluid">
 
-        <div class="jumbotron">
+        <div class="jumbotron bg-primary text-center">
             <h1>Rock, Paper, Scissors, Lizard, Spock</h1>
         </div>
 
@@ -35,21 +39,19 @@
         </div>
 
         <div class="row">
-            <div class="card col m-1">
+            <div class="card col m-1" id="playerPanel1">
             <div class="card-body">
-                <div id="playerPanel1"></div>
                 <div id="playerOneName"></div>
                 <div id="player1Stats"></div>
             </div>      
         </div>
-        <div class="card col m-1">
+        <div class="card col m-1 border-primary">
             <div class="card-body">
                 <div id="roundOutcome"></div>
             </div>
         </div>
-        <div class="card col m-1">      
+        <div class="card col m-1" id="playerPanel2">      
             <div class="card-body">
-                    <div id="playerPanel2"></div>
                     <div id="playerTwoName"></div>
                     <div id="player2Stats"></div>
             </div>
@@ -62,10 +64,7 @@
         </div>
 
     </div>
-    <!-- jQuery -->
-    <script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 
-    <script src="https://www.gstatic.com/firebasejs/5.7.0/firebase.js"></script>
 
     <!-- Script -->
     <script type="text/javascript" src="./assets/javascript/app.js"></script>

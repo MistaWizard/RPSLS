@@ -44,11 +44,11 @@ database.ref("/players/").on("value", function(snapshot) {
 
 		// // Update player1 display
 		$("#playerOneName").text("Waiting for Player 1...");
-		$("#playerPanel1").removeClass("playerPanelTurn");
-		$("#playerPanel2").removeClass("playerPanelTurn");
+		$("#playerPanel1").removeClass("border-success");
+		$("#playerPanel2").removeClass("border-success");
 		database.ref("/outcome/").remove();
 		$("#roundOutcome").html("Rock-Paper-Scissors");
-		$("#waitingNotice").html("");
+		$("#waitingNotice").html("Please add yourself to begin the game");
 		$("#player1Stats").html("Win: 0, Loss: 0, Tie: 0");
 	}
 
@@ -71,18 +71,18 @@ database.ref("/players/").on("value", function(snapshot) {
 
 		// // Update player2 display
 		$("#playerTwoName").text("Waiting for Player 2...");
-		$("#playerPanel1").removeClass("playerPanelTurn");
-		$("#playerPanel2").removeClass("playerPanelTurn");
+		$("#playerPanel1").removeClass("border-success");
+		$("#playerPanel2").removeClass("border-success");
 		database.ref("/outcome/").remove();
 		$("#roundOutcome").html("Rock-Paper-Scissors");
-		$("#waitingNotice").html("");
+		$("#waitingNotice").html("Please add yourself to begin the game");
 		$("#player2Stats").html("Win: 0, Loss: 0, Tie: 0");
 	}
 
 	// If both players are now present, it's player1's turn
 	if (player1 && player2) {
 		// Update the display with a green border around player 1
-		$("#playerPanel1").addClass("playerPanelTurn");
+		$("#playerPanel1").addClass("border-success");
 
 		// Update the center display
         $("#waitingNotice").html("Waiting on " + player1Name + " to choose...");
@@ -93,16 +93,16 @@ database.ref("/players/").on("value", function(snapshot) {
 		database.ref("/turn/").remove();
 		database.ref("/outcome/").remove();
 
-		$("#playerPanel1").removeClass("playerPanelTurn");
-		$("#playerPanel2").removeClass("playerPanelTurn");
+		$("#playerPanel1").removeClass("border-success");
+		$("#playerPanel2").removeClass("border-success");
 		$("#roundOutcome").html("Rock-Paper-Scissors");
-		$("#waitingNotice").html("");
+		$("#waitingNotice").html("Please add yourself to begin the game");
 	}
 });
 
 // Attach a listener that detects player disconnection events
 database.ref("/players/").on("child_removed", function(snapshot) {
-	console.log(snapshot.val().name + " has disconnected!");
+    console.log(snapshot.val().name + " has disconnected!");
 });
 
 $("#addplayer").on("click", function(event) {
@@ -202,9 +202,8 @@ database.ref("/turn/").on("value", function(snapshot) {
 
 		// Update the display if both players are in the game
 		if (player1 && player2) {
-            $("#roundOutcome").empty();
-			$("#playerPanel1").addClass("playerPanelTurn");
-			$("#playerPanel2").removeClass("playerPanelTurn");
+			$("#playerPanel1").addClass("border-success");
+			$("#playerPanel2").removeClass("border-success");
             $("#waitingNotice").html("Waiting on " + player1Name + " to choose...");
 		}
 	} else if (snapshot.val() === 2) {
@@ -213,8 +212,8 @@ database.ref("/turn/").on("value", function(snapshot) {
 
 		// Update the display if both players are in the game
 		if (player1 && player2) {
-			$("#playerPanel1").removeClass("playerPanelTurn");
-			$("#playerPanel2").addClass("playerPanelTurn");
+			$("#playerPanel1").removeClass("border-success");
+			$("#playerPanel2").addClass("border-success");
             $("#waitingNotice").html("Waiting on " + player2Name + " to choose...");
 		}
 	} else if (snapshot.val() === 3) {
