@@ -233,7 +233,7 @@ database.ref("/turn/").on("value", function(snapshot) {
     }
     // Check if it's the outcome turn
     else if (snapshot.val() === 3) {
-        console.log("TURN 3 means Outcome Round");
+        // console.log("TURN 3 means Outcome Round");
         turn = 3;
         setTimeout(endGame, 5000);
     }
