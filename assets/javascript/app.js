@@ -15,32 +15,32 @@ var database = firebase.database();
 
 // Creates an array that lists out all of the options (Rock, Paper, or Scissors).
 var computerChoices = ["Rock", "Paper", "Scissors", "Lizard", "Spock"];
-var user1 = null;
-var user2 = null;
-var user1Guess = "";
-var user2Guess = "";
-var user1Name = "";
-var user2Name = "";
+var player1 = null;
+var player2 = null;
+var player1Guess = "";
+var player2Guess = "";
+var player1Name = "";
+var player2Name = "";
 var turn = 1;
 
 // Attach a listener to the database /players/ node to listen for any changes
 database.ref("/players/").on("value", function(snapshot) {
 	// Check for existence of player 1 in the database
-	if (snapshot.child("user1").exists()) {
+	if (snapshot.child("player1").exists()) {
 		console.log("Player 1 exists");
 
-		// Record user1 data
-		user1 = snapshot.val().user1;
-		user1Name = user1.name;
+		// Record player1 data
+		player1 = snapshot.val().player1;
+		player1Name = player1.name;
 
 		// // Update player1 display
-		$("#playerOneName").text(user1Name);
+		$("#playerOneName").text(player1Name);
 		$("#player1Stats").html("Win: " + player1.win + ", Loss: " + player1.lose + ", Tie: " + player1.tie);
 	} else {
 		console.log("Player 1 does NOT exist");
 
-		user1 = null;
-		user1Name = "";
+		player1 = null;
+		player1Name = "";
 
 		// // Update player1 display
 		$("#playerOneName").text("Waiting for Player 1...");
@@ -53,21 +53,21 @@ database.ref("/players/").on("value", function(snapshot) {
 	}
 
 	// Check for existence of player 2 in the database
-	if (snapshot.child("user2").exists()) {
+	if (snapshot.child("player2").exists()) {
 		console.log("Player 2 exists");
 
-		// Record user2 data
-		user2 = snapshot.val().user2;
-		user2Name = user2.name;
+		// Record player2 data
+		player2 = snapshot.val().player2;
+		player2Name = player2.name;
 
 		// // Update player2 display
-		$("#playerTwoName").text(user2Name);
+		$("#playerTwoName").text(player2Name);
 		$("#player2Stats").html("Win: " + player2.win + ", Loss: " + player2.lose + ", Tie: " + player2.tie);
 	} else {
 		console.log("Player 2 does NOT exist");
 
-		user2 = null;
-		user2Name = "";
+		player2 = null;
+		player2Name = "";
 
 		// // Update player2 display
 		$("#playerTwoName").text("Waiting for Player 2...");
@@ -79,17 +79,17 @@ database.ref("/players/").on("value", function(snapshot) {
 		$("#player2Stats").html("Win: 0, Loss: 0, Tie: 0");
 	}
 
-	// If both players are now present, it's user1's turn
-	if (user1 && user2) {
+	// If both players are now present, it's player1's turn
+	if (player1 && player2) {
 		// Update the display with a green border around player 1
-		$("#userPanel1").addClass("playerPanelTurn");
+		$("#playerPanel1").addClass("playerPanelTurn");
 
 		// Update the center display
-		$("#waitingNotice").html("Waiting on " + user1Name + " to choose...");
+		$("#waitingNotice").html("Waiting on " + player1Name + " to choose...");
 	}
 
 	// If both players leave the game, empty the chat session
-	if (!user1 && !user2) {
+	if (!player1 && !player2) {
 		// database.ref("/chat/").remove();
 		database.ref("/turn/").remove();
 		database.ref("/outcome/").remove();
@@ -108,61 +108,61 @@ database.ref("/players/").on("child_removed", function(snapshot) {
 
 $("#addplayer").on("click", function(event) {
     event.preventDefault();
-    if (user1 === null) {
+    if (player1 === null) {
         console.log("Adding Player 1");
         renderButtons();
-        user1Name = $("#player-input").val().trim();
+        player1Name = $("#player-input").val().trim();
         form.reset();
-        user1 = {
-            name: user1Name,
+        player1 = {
+            name: player1Name,
             win: 0,
             lose: 0,
             tie: 0,
             choice: "",
         };
-        database.ref().child("/players/user1").set(user1);
-        database.ref("/players/user1").onDisconnect().remove();
+        database.ref().child("/players/player1").set(player1);
+        database.ref("/players/player1").onDisconnect().remove();
     }
-    else if ( (user1 !== null) && (user2 === null) ) {
+    else if ( (player1 !== null) && (player2 === null) ) {
         console.log("Adding Player 2");
         renderButtons();
-        user2Name = $("#player-input").val().trim();
+        player2Name = $("#player-input").val().trim();
         form.reset();
-        user2 = {
-            name: user2Name,
+        player2 = {
+            name: player2Name,
             win: 0,
             lose: 0,
             tie: 0,
             choice: "",
         };
-        database.ref().child("/players/user2").set(user2);
-        database.ref("/players/user2").onDisconnect().remove();
+        database.ref().child("/players/player2").set(player2);
+        database.ref("/players/player2").onDisconnect().remove();
     }
 });
 
-function user1Go() {
-    if (user1 && user2 && (user1Name === user1.name) && (turn === 1)) {
+function player1Go() {
+    if (player1 && player2 && (player1Name === player1.name) && (turn === 1)) {
         var choice = $(this).attr("data-name");
-        user1Guess = choice;
-        database.ref().child("/players/player1/choice").set(user1Guess);
-        // alert(user1Name + " guess: " + user1Guess);
+        player1Guess = choice;
+        database.ref().child("/players/player1/choice").set(player1Guess);
+        // alert(player1Name + " guess: " + player1Guess);
         turn = 2;
         database.ref().child("/turn").set(2);
     }
 };
 
-function user2Go() {
-    if (user1 && user2 && (user2Name === user2.name) && (turn === 2)) {
+function player2Go() {
+    if (player1 && player2 && (player2Name === player2.name) && (turn === 2)) {
         var choice = $(this).attr("data-name");
-        user2Guess = choice;
-        database.ref().child("/players/player2/choice").set(user2Guess);
-        // alert(user2Name + " guess: " + user2Guess);
+        player2Guess = choice;
+        database.ref().child("/players/player2/choice").set(player2Guess);
+        // alert(player2Name + " guess: " + player2Guess);
         runGame();
     }
 };
 
 function renderButtons() {
-    if (user1 === null) {
+    if (player1 === null) {
         console.log("Adding Player 1 buttons");
 
         $("#button-view").empty();
@@ -176,7 +176,7 @@ function renderButtons() {
             $("#button-view").append(a);
         };
     }
-    else if ( (user1 !== null) && (user2 === null) ) {
+    else if ( (player1 !== null) && (player2 === null) ) {
         console.log("Adding Player 2 buttons");
 
         $("#button-view").empty();
@@ -197,7 +197,7 @@ database.ref("/outcome/").on("value", function(snapshot) {
 });
 
 database.ref("/turn/").on("value", function(snapshot) {
-	// Check if it's user1's turn
+	// Check if it's player1's turn
 	if (snapshot.val() === 1) {
         console.log("TURN 1");
         $("#roundOutcome").empty();
@@ -208,17 +208,17 @@ database.ref("/turn/").on("value", function(snapshot) {
             $("#roundOutcome").empty();
 			$("#playerPanel1").addClass("playerPanelTurn");
 			$("#playerPanel2").removeClass("playerPanelTurn");
-            $("#waitingNotice").html("Waiting on " + user1Name + " to choose...");
+            $("#waitingNotice").html("Waiting on " + player1Name + " to choose...");
 		}
 	} else if (snapshot.val() === 2) {
 		console.log("TURN 2");
 		turn = 2;
 
 		// Update the display if both players are in the game
-		if (user1 && user2) {
-			$("#userPanel1").removeClass("playerPanelTurn");
-			$("#userPanel2").addClass("playerPanelTurn");
-            $("#waitingNotice").html("Waiting on " + user2Name + " to choose...");
+		if (player1 && player2) {
+			$("#playerPanel1").removeClass("playerPanelTurn");
+			$("#playerPanel2").addClass("playerPanelTurn");
+            $("#waitingNotice").html("Waiting on " + player2Name + " to choose...");
 		}
 	} else if (snapshot.val() === 3) {
         console.log("TURN 3 means Outcome Round");
@@ -228,58 +228,52 @@ database.ref("/turn/").on("value", function(snapshot) {
 });
 
 function runGame() {
-    user1Guess = user1.choice;
-    user2Guess = user2.choice;
-    if (user1Guess == user2Guess)  //condition 1
+    player1Guess = player1.choice;
+    player2Guess = player2.choice;
+    if (player1Guess == player2Guess)  //condition 1
         userTied();
-        else if (user1Guess == "Rock") //condition 2
-            if (user2Guess == "Scissors") 
-                user1Won();
-            else if (user2Guess == "Lizard")
-                user1Won();
+        else if (player1Guess == "Rock") //condition 2
+            if (player2Guess == "Scissors") 
+                player1Won();
+            else if (player2Guess == "Lizard")
+                player1Won();
             else 
-                user2Won();
+                player2Won();
     
-        else if (user1Guess == "Paper") //condition 3
-            if (user2Guess == "Rock") 
-                user1Won();
-            else if (user2Guess == "Spock")
-                user1Won();
+        else if (player1Guess == "Paper") //condition 3
+            if (player2Guess == "Rock") 
+                player1Won();
+            else if (player2Guess == "Spock")
+                player1Won();
             else 
-                user2Won();
+                player2Won();
     
-        else if (user1Guess == "Scissors")
-            if (user2Guess == "Paper")
-                user1Won();
-            else if (user2Guess == "Lizard")
-                user1Won();
+        else if (player1Guess == "Scissors")
+            if (player2Guess == "Paper")
+                player1Won();
+            else if (player2Guess == "Lizard")
+                player1Won();
             else 
-                user2Won();
+                player2Won();
 
-        else if (user1Guess == "Lizard")
-            if (user2Guess == "Paper")
-                user1Won();
-            else if (user2Guess == "Spock")
-                user1Won();
+        else if (player1Guess == "Lizard")
+            if (player2Guess == "Paper")
+                player1Won();
+            else if (player2Guess == "Spock")
+                player1Won();
             else
-                user2Won();
+                player2Won();
 
-        else if (user1Guess == "Spock")
-            if (user2Guess == "Rock")
-                user1Won();
-            else if (user2Guess == "Scissors")
-                user1Won();
+        else if (player1Guess == "Spock")
+            if (player2Guess == "Rock")
+                player1Won();
+            else if (player2Guess == "Scissors")
+                player1Won();
             else
-                user2Won();
+                player2Won();
 
         turn = 3;
         database.ref().child("/turn").set(3);
-};
-
-
-function endGame() {
-    turn = 1;
-    database.ref().child("/turn").set(1);
 };
 
 function endGame() {
@@ -287,13 +281,13 @@ function endGame() {
     database.ref().child("/turn").set(1);
 }
 
-function user1Won() {
+function player1Won() {
     database.ref().child("/outcome/").set(player1.name + " beats " + player2.name + " with " + player1.choice + " over " + player2.choice);
     database.ref().child("/players/player1/win").set(player1.win + 1);
     database.ref().child("/players/player2/lose").set(player2.lose + 1);
 };
 
-function user2Won() {
+function player2Won() {
     database.ref().child("/outcome/").set(player2.name + " beats " + player1.name + " with " + player2.choice + " over " + player1.choice);
     database.ref().child("/players/player1/lose").set(player1.lose + 1);
     database.ref().child("/players/player2/win").set(player2.win + 1);
@@ -301,12 +295,12 @@ function user2Won() {
 
 function userTied() {
     database.ref().child("/outcome/").set("Great minds think alike you copycat!");
-    database.ref().child("/players/user1/tie").set(user1.tie + 1);
-    database.ref().child("/players/user2/tie").set(user2.tie + 1);
+    database.ref().child("/players/player1/tie").set(player1.tie + 1);
+    database.ref().child("/players/player2/tie").set(player2.tie + 1);
 };
 
-$(document).on("click", ".choice1", user1Go);
+$(document).on("click", ".choice1", player1Go);
 
-$(document).on("click", ".choice2", user2Go);
+$(document).on("click", ".choice2", player2Go);
 
 });
