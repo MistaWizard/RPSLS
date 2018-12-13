@@ -11,7 +11,11 @@
     <link rel="stylesheet" type="text/css" href="assets/css/style.css">
 </head>
 <body>
-    <div class="container-fluid">
+    <div class="container">
+
+        <div class="jumbotron">
+            <h1>Rock, Paper, Scissors, Lizard, Spock</h1>
+        </div>
 
         <div class="row">
                 <div class="col-xs-12">
@@ -27,34 +31,43 @@
 
         
         <div class="row">
-            <div class="col-xs-4">
+            <div class="col-12">
                 <div id="waitingNotice"></div>
             </div>
         </div>
 
         <div class="row">
-            <div class="col-xs-4">
+            <div class="card col m-1">
+            <div class="card-body">
                 <div id="userPanel1"></div>
                 <div id="playerOneName"></div>
                 <div id="user1Stats"></div>
-            </div>            
-            <div class="col-xs-4">
+            </div>      
+        </div>
+        <div class="card col m-1">
+            <div class="card-body">
+                <div id="roundOutcome"></div>
+            </div>
+        </div>
+        <div class="card col m-1">      
+            <div class="card-body">
                     <div id="userPanel2"></div>
                     <div id="playerTwoName"></div>
                     <div id="user2Stats"></div>
             </div>
-        </div>    
+        </div>  
+        </div>  
 
         <div class="row">
-            <div class="col-xs-12" id="button-view">
+            <div class="col-12" id="button-view">
             </div>
         </div> 
 
-        <div class="row">
+        <!-- <div class="row">
                 <div class="col-xs-4">
                     <div id="roundOutcome"></div>
                 </div>
-            </div>    
+            </div>     -->
 
     </div>
     <!-- jQuery -->
