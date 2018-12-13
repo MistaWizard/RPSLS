@@ -27,7 +27,7 @@ var turn = 1;
 database.ref("/players/").on("value", function(snapshot) {
 	// Check for existence of player 1 in the database
 	if (snapshot.child("player1").exists()) {
-		console.log("Player 1 exists");
+		// console.log("Player 1 exists");
 
 		// Record player1 data
 		player1 = snapshot.val().player1;
@@ -37,7 +37,7 @@ database.ref("/players/").on("value", function(snapshot) {
 		$("#playerOneName").text(player1Name);
 		$("#player1Stats").html("Win: " + player1.win + ", Loss: " + player1.lose + ", Tie: " + player1.tie);
 	} else {
-		console.log("Player 1 does NOT exist");
+		// console.log("Player 1 does NOT exist");
 
 		player1 = null;
 		player1Name = "";
@@ -54,7 +54,7 @@ database.ref("/players/").on("value", function(snapshot) {
 
 	// Check for existence of player 2 in the database
 	if (snapshot.child("player2").exists()) {
-		console.log("Player 2 exists");
+		// console.log("Player 2 exists");
 
 		// Record player2 data
 		player2 = snapshot.val().player2;
@@ -64,7 +64,7 @@ database.ref("/players/").on("value", function(snapshot) {
 		$("#playerTwoName").text(player2Name);
 		$("#player2Stats").html("Win: " + player2.win + ", Loss: " + player2.lose + ", Tie: " + player2.tie);
 	} else {
-		console.log("Player 2 does NOT exist");
+		// console.log("Player 2 does NOT exist");
 
 		player2 = null;
 		player2Name = "";
@@ -88,7 +88,7 @@ database.ref("/players/").on("value", function(snapshot) {
         $("#waitingNotice").html("Waiting on " + player1Name + " to choose...");
 	}
 
-	// If both players leave the game, empty the chat session
+	// If both players leave the game, empty the the database
 	if (!player1 && !player2) {
 		database.ref("/turn/").remove();
 		database.ref("/outcome/").remove();
@@ -105,10 +105,13 @@ database.ref("/players/").on("child_removed", function(snapshot) {
     console.log(snapshot.val().name + " has disconnected!");
 });
 
+// Click functiont to add a player
 $("#addplayer").on("click", function(event) {
     event.preventDefault();
+    // Does player1 exist
     if (player1 === null) {
-        console.log("Adding Player 1");
+        // console.log("Adding Player 1");
+        // Render buttons for player1
         renderButtons();
         player1Name = $("#player-input").val().trim();
         form.reset();
@@ -122,8 +125,10 @@ $("#addplayer").on("click", function(event) {
         database.ref().child("/players/player1").set(player1);
         database.ref("/players/player1").onDisconnect().remove();
     }
+    // Does player2 exist if player1 exists
     else if ( (player1 !== null) && (player2 === null) ) {
-        console.log("Adding Player 2");
+        // console.log("Adding Player 2");
+        // Render buttons for player2
         renderButtons();
         player2Name = $("#player-input").val().trim();
         form.reset();
@@ -139,6 +144,7 @@ $("#addplayer").on("click", function(event) {
     }
 });
 
+// Function for player1 choice selection
 function player1Go() {
     if (player1 && player2 && (player1Name === player1.name) && (turn === 1)) {
         var choice = $(this).attr("data-name");
@@ -149,6 +155,7 @@ function player1Go() {
     }
 };
 
+// Function for player2 choice selection
 function player2Go() {
     if (player1 && player2 && (player2Name === player2.name) && (turn === 2)) {
         var choice = $(this).attr("data-name");
@@ -158,9 +165,11 @@ function player2Go() {
     }
 };
 
+// Render our buttons upon adding a player
 function renderButtons() {
+    // Determine if player1 exists and render player1 buttons if not
     if (player1 === null) {
-        console.log("Adding Player 1 buttons");
+        // console.log("Adding Player 1 buttons");
 
         $("#button-view").empty();
 
@@ -173,8 +182,9 @@ function renderButtons() {
             $("#button-view").append(a);
         };
     }
+    // Determine if player2 exists and render player2 buttons if not
     else if ( (player1 !== null) && (player2 === null) ) {
-        console.log("Adding Player 2 buttons");
+        // console.log("Adding Player 2 buttons");
 
         $("#button-view").empty();
 
@@ -189,14 +199,16 @@ function renderButtons() {
     }
 };
 
+// Watch our database for game outcomes
 database.ref("/outcome/").on("value", function(snapshot) {
     $("#roundOutcome").html(snapshot.val());
 });
 
+// Watch our database for changes in turns
 database.ref("/turn/").on("value", function(snapshot) {
 	// Check if it's player1's turn
 	if (snapshot.val() === 1) {
-        console.log("TURN 1");
+        // console.log("TURN 1");
         $("#roundOutcome").empty();
 		turn = 1;
 
@@ -206,8 +218,10 @@ database.ref("/turn/").on("value", function(snapshot) {
 			$("#playerPanel2").removeClass("border-success");
             $("#waitingNotice").html("Waiting on " + player1Name + " to choose...");
 		}
-	} else if (snapshot.val() === 2) {
-		console.log("TURN 2");
+    }
+    // Check if it's player2's turn
+    else if (snapshot.val() === 2) {
+		// console.log("TURN 2");
 		turn = 2;
 
 		// Update the display if both players are in the game
@@ -216,19 +230,24 @@ database.ref("/turn/").on("value", function(snapshot) {
 			$("#playerPanel2").addClass("border-success");
             $("#waitingNotice").html("Waiting on " + player2Name + " to choose...");
 		}
-	} else if (snapshot.val() === 3) {
+    }
+    // Check if it's the outcome turn
+    else if (snapshot.val() === 3) {
         console.log("TURN 3 means Outcome Round");
         turn = 3;
         setTimeout(endGame, 5000);
     }
 });
 
+// Game win/lose logic
 function runGame() {
     player1Guess = player1.choice;
     player2Guess = player2.choice;
-    if (player1Guess == player2Guess)  //condition 1
+    // Scenario one
+    if (player1Guess == player2Guess)
         playerTied();
-        else if (player1Guess == "Rock") //condition 2
+        // Scenario two
+        else if (player1Guess == "Rock")
             if (player2Guess == "Scissors") 
                 player1Won();
             else if (player2Guess == "Lizard")
@@ -236,7 +255,8 @@ function runGame() {
             else 
                 player2Won();
     
-        else if (player1Guess == "Paper") //condition 3
+        // Scenario three
+        else if (player1Guess == "Paper")
             if (player2Guess == "Rock") 
                 player1Won();
             else if (player2Guess == "Spock")
@@ -244,6 +264,7 @@ function runGame() {
             else 
                 player2Won();
     
+        // Scenario four
         else if (player1Guess == "Scissors")
             if (player2Guess == "Paper")
                 player1Won();
@@ -252,6 +273,7 @@ function runGame() {
             else 
                 player2Won();
 
+        // Scenario five
         else if (player1Guess == "Lizard")
             if (player2Guess == "Paper")
                 player1Won();
@@ -260,6 +282,7 @@ function runGame() {
             else
                 player2Won();
 
+        // Scenario six
         else if (player1Guess == "Spock")
             if (player2Guess == "Rock")
                 player1Won();
@@ -268,35 +291,42 @@ function runGame() {
             else
                 player2Won();
 
+        // Change turn to 3 for the outcome round
         turn = 3;
         database.ref().child("/turn").set(3);
 };
 
+// Reset game back to turn 1
 function endGame() {
     turn = 1;
     database.ref().child("/turn").set(1);
 }
 
+// Player1 wins scenario
 function player1Won() {
     database.ref().child("/outcome/").set(player1.name + " beats " + player2.name + " with " + player1.choice + " over " + player2.choice);
     database.ref().child("/players/player1/win").set(player1.win + 1);
     database.ref().child("/players/player2/lose").set(player2.lose + 1);
 };
 
+// Player2 wins scenario
 function player2Won() {
     database.ref().child("/outcome/").set(player2.name + " beats " + player1.name + " with " + player2.choice + " over " + player1.choice);
     database.ref().child("/players/player1/lose").set(player1.lose + 1);
     database.ref().child("/players/player2/win").set(player2.win + 1);
 };
 
+// Players tie and pick the same item
 function playerTied() {
     database.ref().child("/outcome/").set("Great minds think alike you copycat!");
     database.ref().child("/players/player1/tie").set(player1.tie + 1);
     database.ref().child("/players/player2/tie").set(player2.tie + 1);
 };
 
+// .on("click") for player1
 $(document).on("click", ".choice1", player1Go);
 
+// .on("click") for player2
 $(document).on("click", ".choice2", player2Go);
 
 });
