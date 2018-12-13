@@ -101,7 +101,7 @@ database.ref("/players/").on("value", function(snapshot) {
 	}
 });
 
-// Attach a listener that detects user disconnection events
+// Attach a listener that detects player disconnection events
 database.ref("/players/").on("child_removed", function(snapshot) {
 	console.log(snapshot.val().name + " has disconnected!");
 });
@@ -231,7 +231,7 @@ function runGame() {
     player1Guess = player1.choice;
     player2Guess = player2.choice;
     if (player1Guess == player2Guess)  //condition 1
-        userTied();
+        playerTied();
         else if (player1Guess == "Rock") //condition 2
             if (player2Guess == "Scissors") 
                 player1Won();
@@ -293,7 +293,7 @@ function player2Won() {
     database.ref().child("/players/player2/win").set(player2.win + 1);
 };
 
-function userTied() {
+function playerTied() {
     database.ref().child("/outcome/").set("Great minds think alike you copycat!");
     database.ref().child("/players/player1/tie").set(player1.tie + 1);
     database.ref().child("/players/player2/tie").set(player2.tie + 1);
